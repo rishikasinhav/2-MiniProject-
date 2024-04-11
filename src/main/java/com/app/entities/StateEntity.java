@@ -27,8 +27,6 @@ public class StateEntity {
 
 	private String stateName;
 	
-
-	
 	@ManyToOne
 	@JoinColumn(name="country_id")
 	private CountryEntity countryEntity;

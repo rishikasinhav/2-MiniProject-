@@ -13,7 +13,7 @@ public class RegisterDto {
 	
 	private String pwd;
 	
-	private String updatedPwd = "NO";
+	private String updatedPwd ;
 	
 	private String country;
 	

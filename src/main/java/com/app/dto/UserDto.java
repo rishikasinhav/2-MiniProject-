@@ -1,8 +1,10 @@
 package com.app.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+
 public class UserDto {
 
 	private String u_name;
@@ -20,4 +22,6 @@ public class UserDto {
 	private String u_pwd;
 	
 	private String u_updatedPwd;
+	
+	private String u_confirmPwd;
 }

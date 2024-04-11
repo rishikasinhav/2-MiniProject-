@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
@@ -39,7 +40,9 @@ public class UserDtlsEntity {
 	private Long phone;
 	
 	
-	private Long updatedPwd;
+	private String updatedPwd;
+	
+	private String ConfirmedPwd;
 	
 
 	@ManyToOne
