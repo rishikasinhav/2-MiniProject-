@@ -4,24 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-
 public class UserDto {
 
-	private String u_name;
+	private String name;
 	
-	private String u_email;
+	private String email;
 	
-	private String u_phone;
+	private String phone;
 	
-	private String u_country;
+	private Integer countryId;
 	
-	private String u_state;
+	private Integer stateId;
 	
-	private String u_city;
+	private Integer cityId;
 	
-	private String u_pwd;
+	private String pwd;
 	
-	private String u_updatedPwd;
+	private String updatedPwd;
 	
-	private String u_confirmPwd;
-}
+	}

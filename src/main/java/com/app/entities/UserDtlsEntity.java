@@ -34,7 +34,7 @@ public class UserDtlsEntity {
 
 	private String email;
 	
-	private String password;
+	private String pwd;
 	
 	
 	private Long phone;
@@ -42,12 +42,12 @@ public class UserDtlsEntity {
 	
 	private String updatedPwd;
 	
-	private String ConfirmedPwd;
+	
 	
 
 	@ManyToOne
 	@JoinColumn(name="countryId")
-	private CountryEntity countryId;
+	private CountryEntity country;
 	
 	@ManyToOne
 	@JoinColumn(name="stateId")

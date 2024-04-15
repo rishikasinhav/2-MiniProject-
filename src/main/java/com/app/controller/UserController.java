@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.app.dto.LoginDto;
 import com.app.dto.RegisterDto;
@@ -18,6 +20,7 @@ import com.app.repo.CountryRepo;
 import com.app.repo.StateRepo;
 import com.app.repo.UserDtlsRepo;
 import com.app.service.UserService;
+import com.app.service.UserServiceImpl;
 
 public class UserController {
 	
@@ -44,7 +47,11 @@ public class UserController {
 	@GetMapping("/register")
 	public String registePage(Model model)
 	{
+		
+		
 		model.addAttribute("register", new RegisterDto());
+			Map<Integer, String> countryMap = userService.getCountry();
+			model.addAttribute("countries", countryMap);
 		return "register";
 		
 	}
@@ -54,14 +61,13 @@ public class UserController {
 	
 	//To get state Id based on country
 	@GetMapping("/getState/{cid}")
+	@ResponseBody
 	public Map<Integer, String> getState(@PathVariable("cid") Integer cid)
 	{
+		
+		Map<Integer, String> stateMap = userService.getState(cid);
 	
-		Map<Integer, String >  map=new HashMap();
-		String string = map.get(cid);
-		
-		
-		return map;
+		return stateMap;
 	}
 	
 	//#############################################################################
@@ -69,43 +75,129 @@ public class UserController {
 	//To get city Id based on state 
 	
 	@GetMapping("/getCity/{sid}")
+	@ResponseBody
 	public Map<Integer, String> getCities(@PathVariable("sid")Integer sid)
 	{
-		return null;
+		
+		Map<Integer, String> cityMap = userService.getCity(sid);
+		return cityMap;
 	}
 	
 	//################################################################################
 	
 	//To handle Register page
+	@PostMapping("/registerview")
 	public String register(RegisterDto regDto, Model model)
 	{
 		
-		return null;
+			UserDto userDto = userService.getUser(regDto.getEmail());
+			if(userDto!=null)
+			{
+				model.addAttribute("emsg", "Duplicate Email");
+				return "registerView";
+			}
+			else
+			{
+				boolean registerUser = userService.registerUser(regDto);
+				if(registerUser)
+				{
+					
+					model.addAttribute("smsg", "Registration successful");
+					return "registerView";
+				}
+				else
+				{
+					model.addAttribute("emsg", "Registration failed");
+					return "registerView";
+				}
+				
+			}
+				
+		
 	}
 
 	//################################################################################
 	
 	//To load Login Page
 	
+	@GetMapping("/")
 	public String loginPage(Model model)
 	{
-		return null;
+		model.addAttribute("loginDto", new LoginDto());
+		
+		
+		return "loginView";
 	}
 	
 	//##############################################################################
 	
 	//To handle Login page
+	@PostMapping("/login")
 	public String login(LoginDto loginDto, Model model)
 	{
-		return null;
+		
+		UserDto user2 = userService.getUser(loginDto);
+		
+		if(user2==null)
+		{
+			model.addAttribute("emsg", "Invalid Credentials");
+			return"redirect:/";
+		}
+		else
+		{
+			String updatedPwd = user2.getUpdatedPwd();
+			
+			if("yes".equals(updatedPwd))
+			{
+				return "redirect:dashboard";
+			}
+			else
+			{
+				return "resetPass";
+			}
+		}
+		
 	}
 	
 	//###############################################################################
 	
 	//To reset Password
-	
-	public String resetPwd(ResetPwdDto pwdDto)
+	@PostMapping("/resetPass")
+	public String resetPwd(ResetPwdDto pwdDto,Model model)
 	{
+		UserDto user = userService.getUser(pwdDto.getEmail());
+		
+		if(pwdDto.getOldPwd()==user.getEmail())
+		{
+			if(pwdDto.getNewPwd().equals(pwdDto.getConfirmPwd()))
+			{
+				return "resetPass";
+			}
+			else
+			{
+				model.addAttribute("emsg", "Confirm password and new password must be same");
+				return"resetPass";
+			}
+		}
+		
+		if(user!=null)
+		{
+			model.addAttribute("email", user.getEmail());
+			boolean resetPwd = userService.resetPwd(pwdDto);
+			if(resetPwd)
+			{
+				return "redirect:dashboard";
+			}
+			else
+			{
+				model.addAttribute("resetPwd", new ResetPwdDto());
+				return"resetPass";
+			}
+			
+
+		}
+				
+		
 		return "resetPwd";
 	}
 	
@@ -114,7 +206,10 @@ public class UserController {
 	//To load Dashboard Page
 	public String Dashboard(Model model)
 	{
-		return null;
+		String getquote = userService.getquote();
+		model.addAttribute("getquote", getquote);
+	
+		return "dashboard";
 	}
 	
 	//################################################################################

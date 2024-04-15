@@ -14,21 +14,21 @@ import com.app.entities.UserDtlsEntity;
 
 public interface UserService {
 
-	public UserDto getUser(UserDto userDto);
+	public UserDto getUser(LoginDto loginDto);
 	
-	public boolean registerUser(UserDto userDto);
+	public boolean registerUser(RegisterDto userDto);
 	
 	public boolean resetPwd(ResetPwdDto rDto);
 	
-	public List<CountryEntity> getCountry();
+	public Map<Integer,String> getCountry();
 	
-	public List<StateEntity> getState(Integer cid);
+	public Map<Integer,String> getState(Integer cid);
 	
-	public List<CityEntity> getCity(Integer sid);
+	public Map<Integer,String> getCity(Integer sid);
 	
 	public String getquote();
 	
-	//public UserDto getUser(String email);
+	public UserDto getUser(String email);
 	
 	
 }

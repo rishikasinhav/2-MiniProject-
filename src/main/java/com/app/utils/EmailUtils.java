@@ -2,12 +2,14 @@ package com.app.utils;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EmailUtils {
 	
 	private JavaMailSender sendMail;
 	
-	public  void sendEmail(String to, String subject, String body)
+	public  boolean sendEmail(String to, String subject, String body)
 	{
 		SimpleMailMessage message = new SimpleMailMessage();
 		
@@ -16,6 +18,7 @@ public class EmailUtils {
 		message.setText(body);
 		
 		sendMail.send(message);
+		return false;
 		
 	}
 

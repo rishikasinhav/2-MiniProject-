@@ -15,10 +15,10 @@ public class RegisterDto {
 	
 	private String updatedPwd ;
 	
-	private String country;
+	private Integer countryId;
 	
-	private String state;
+	private Integer stateId;
 	
-	private String city;
+	private Integer cityId;
 
 }
