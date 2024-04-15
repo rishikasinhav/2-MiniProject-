@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,8 @@ import com.app.repo.UserDtlsRepo;
 import com.app.service.UserService;
 import com.app.service.UserServiceImpl;
 
+
+@Controller
 public class UserController {
 	
 	@Autowired
@@ -36,23 +39,32 @@ public class UserController {
 	@Autowired
 	private UserDtlsRepo uRepo;
 	
-	@Autowired
-	private UserDto uDto;
+	//@Autowired
+	//private UserDto uDto;
 	
 	@Autowired
 	private UserService userService;
 	
+	
+	@GetMapping("/check")
+	public String load() {
+		return "sample";
+	}
+	
+	
+	
 	//##########################################################################
 	//To Load Register Page
-	@GetMapping("/register")
+	@GetMapping("/registerView")
 	public String registePage(Model model)
 	{
 		
 		
-		model.addAttribute("register", new RegisterDto());
+		model.addAttribute("registerDto", new RegisterDto());
 			Map<Integer, String> countryMap = userService.getCountry();
 			model.addAttribute("countries", countryMap);
-		return "register";
+		
+		return "registerView";
 		
 	}
 	
@@ -86,7 +98,7 @@ public class UserController {
 	//################################################################################
 	
 	//To handle Register page
-	@PostMapping("/registerview")
+	@PostMapping("/registerView")
 	public String register(RegisterDto regDto, Model model)
 	{
 		
@@ -96,22 +108,20 @@ public class UserController {
 				model.addAttribute("emsg", "Duplicate Email");
 				return "registerView";
 			}
-			else
-			{
 				boolean registerUser = userService.registerUser(regDto);
 				if(registerUser)
 				{
 					
 					model.addAttribute("smsg", "Registration successful");
-					return "registerView";
+					
 				}
 				else
 				{
 					model.addAttribute("emsg", "Registration failed");
-					return "registerView";
+					
 				}
 				
-			}
+				return "registerView";
 				
 		
 	}
@@ -126,7 +136,7 @@ public class UserController {
 		model.addAttribute("loginDto", new LoginDto());
 		
 		
-		return "loginView";
+		return "login";
 	}
 	
 	//##############################################################################
@@ -153,7 +163,9 @@ public class UserController {
 			}
 			else
 			{
-				return "resetPass";
+				model.addAttribute("resetDto", new ResetPwdDto());
+				//model.addAttribute("loginDto", new LoginDto());
+				return "resetView";
 			}
 		}
 		
@@ -162,22 +174,20 @@ public class UserController {
 	//###############################################################################
 	
 	//To reset Password
-	@PostMapping("/resetPass")
+	@PostMapping("/resetView")
 	public String resetPwd(ResetPwdDto pwdDto,Model model)
 	{
 		UserDto user = userService.getUser(pwdDto.getEmail());
 		
 		if(pwdDto.getOldPwd()==user.getEmail())
 		{
-			if(pwdDto.getNewPwd().equals(pwdDto.getConfirmPwd()))
-			{
-				return "resetPass";
-			}
-			else
+			if(!pwdDto.getNewPwd().equals(pwdDto.getConfirmPwd()))
 			{
 				model.addAttribute("emsg", "Confirm password and new password must be same");
-				return"resetPass";
+				return"resetView";
 			}
+		
+			
 		}
 		
 		if(user!=null)
@@ -191,19 +201,18 @@ public class UserController {
 			else
 			{
 				model.addAttribute("resetPwd", new ResetPwdDto());
-				return"resetPass";
+				return"resetView";
 			}
 			
 
 		}
-				
-		
-		return "resetPwd";
+			return "resetView";
 	}
 	
 	//###############################################################################
 	
 	//To load Dashboard Page
+	@PostMapping("/dashboard")
 	public String Dashboard(Model model)
 	{
 		String getquote = userService.getquote();
@@ -215,10 +224,11 @@ public class UserController {
 	//################################################################################
 	
 	// To logout
+	@GetMapping("/logout")
 	public String Logout()
 	{
 		return "login";
 	}
-	
+		
 	//###############################################################################
 }

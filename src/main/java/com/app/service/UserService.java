@@ -3,6 +3,8 @@ package com.app.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import com.app.dto.LoginDto;
 import com.app.dto.RegisterDto;
 import com.app.dto.ResetPwdDto;
@@ -12,6 +14,7 @@ import com.app.entities.CountryEntity;
 import com.app.entities.StateEntity;
 import com.app.entities.UserDtlsEntity;
 
+@Service
 public interface UserService {
 
 	public UserDto getUser(LoginDto loginDto);

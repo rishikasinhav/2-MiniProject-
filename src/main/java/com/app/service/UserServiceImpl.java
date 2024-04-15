@@ -51,31 +51,17 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private StateRepo sRepo;
 	
-	
+	@Autowired
 	private EmailUtils emailUtils;
+	
+	private QuotesDto[] quotations=null;
 	
 	//##############################################################################################
 	
 	@Override
 	public UserDto getUser(LoginDto loginDto) {
 		// TODO Auto-generated method stub
-	
-		
-		
-			/**boolean emailAndPassword = uRepo.findByEmailAndPassword(userDto.getU_email(), userDto.getU_pwd());
-			
-			if(emailAndPassword)
-			{
-				UserDtlsEntity map = modelMapper.map(userDto, UserDtlsEntity.class);
-				
-				UserDto user = uRepo.getUser(map.getEmail());
-				return user;
-			
-			}
-			else {
-				return null;
-			}
-		**/
+
 		
 		UserDtlsEntity user= new UserDtlsEntity();
 		
@@ -97,7 +83,6 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	//#################################################################################################
-
 	@Override
 	public boolean registerUser(RegisterDto regDto) {
 		// TODO Auto-generated method stub
@@ -130,8 +115,6 @@ public class UserServiceImpl implements UserService {
 			 
 			 UserDtlsEntity save = uRepo.save(entity);
 			 
-			
-			
 			return save.getUserId()!=null;
 		}
 
@@ -210,13 +193,9 @@ public class UserServiceImpl implements UserService {
 		});
 		
 		return map;
-			
-		
-		
 	}
 	
 	//##########################################################################################
-
 	@Override
 	public Map<Integer,String> getCity(Integer sid) {
 		
@@ -232,54 +211,47 @@ public class UserServiceImpl implements UserService {
 		all.forEach(c->{
 			map.put(c.getCityId(), c.getCityName());
 		});
-		
-		
 		return map;
-		
 	}
-	
 	//##########################################################################################
-
 	@Override
 	public String getquote() {
 		// TODO Auto-generated method stub
-		String url= " https://type.fit/api/quotes";
-		
-		QuotesDto[] quotations=null;
-		RestTemplate rt=new RestTemplate();
-		ResponseEntity<String> forEntity = rt.getForEntity(url,String.class );
-		
-		String responseBody = forEntity.getBody();
-		
-		ObjectMapper mapper=new ObjectMapper();
-		
-		try {
-			 quotations = mapper.readValue(responseBody, QuotesDto[].class);
-		}
-		catch(Exception e)
+		if(quotations==null)
 		{
-			e.printStackTrace();
+			String url= " https://type.fit/api/quotes";
+			
+			
+			RestTemplate rt=new RestTemplate();
+			ResponseEntity<String> forEntity = rt.getForEntity(url,String.class );
+			
+			String responseBody = forEntity.getBody();
+			ObjectMapper mapper=new ObjectMapper();
+			
+			try {
+				 quotations = mapper.readValue(responseBody, QuotesDto[].class);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
+		
 		Random r=new Random();
 		
-		int index = r.nextInt(quotations.length-1);
-		
-		
-		
+		int index = r.nextInt(quotations.length-1);	
 		//rt.respo
 		return quotations[index].getText();
 	}
 	
 	//##########################################################################################
-
 	@Override
 	public UserDto getUser(String email) {
 		// TODO Auto-generated method stub
 		
 		UserDtlsEntity user=new UserDtlsEntity();
-		String email2 = user.getEmail();
-		
-		if(email==email2)
+				
+		if(user==null)
 		{
 			return null;
 		}
@@ -288,13 +260,9 @@ public class UserServiceImpl implements UserService {
 			ModelMapper mapper=new ModelMapper();
 			UserDto map = mapper.map(user, UserDto.class);
 			return  map;
-			
 		}
-		
 	}
 	//##############################################################################################
-	
-
 private static String generateRandom() {
 
 	String aToZ="ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";

@@ -11,14 +11,24 @@ public class EmailUtils {
 	
 	public  boolean sendEmail(String to, String subject, String body)
 	{
-		SimpleMailMessage message = new SimpleMailMessage();
-		
-		message.setTo(to);
-		message.setSubject(subject);
-		message.setText(body);
-		
-		sendMail.send(message);
-		return false;
+		boolean isSent=false;
+		try {
+			SimpleMailMessage message = new SimpleMailMessage();
+			
+			message.setTo(to);
+			message.setSubject(subject);
+			message.setText(body);
+			
+			sendMail.send(message);
+			isSent=true;
+			return isSent;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		return isSent;
 		
 	}
 
