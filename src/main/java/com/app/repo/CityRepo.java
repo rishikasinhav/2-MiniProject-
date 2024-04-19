@@ -10,6 +10,6 @@ import com.app.entities.CityEntity;
 
 public interface CityRepo extends JpaRepository<CityEntity, Integer>{
 
-	@Query(value="Select * from CITY where stateId=:sid", nativeQuery = true)
+	@Query(value="Select * from CITY_MASTER where stateId=:sid", nativeQuery = true)
 	public List<CityEntity> findByStateId(Integer sid);
 }

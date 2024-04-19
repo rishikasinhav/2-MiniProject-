@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name="COUNTRY")
+@Table(name="COUNTRY_MASTER")
 @Data
 public class CountryEntity {
 

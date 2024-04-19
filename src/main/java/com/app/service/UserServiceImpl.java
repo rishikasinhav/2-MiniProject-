@@ -87,12 +87,12 @@ public class UserServiceImpl implements UserService {
 	public boolean registerUser(RegisterDto regDto) {
 		// TODO Auto-generated method stub
 	
-	UserDtlsEntity dtlsEntity = uRepo.findByEmailAndPassword(regDto.getEmail(), regDto.getPwd());
-		if(dtlsEntity !=null)
+	//UserDtlsEntity dtlsEntity = uRepo.findByEmailAndPassword(regDto.getEmail(), regDto.getPwd());
+	/**	if(dtlsEntity !=null)
 		{
 			return false;
 		}
-		{
+		{**/ 
 			
 			ModelMapper mapper=new ModelMapper();
 			UserDtlsEntity entity = mapper.map(regDto,UserDtlsEntity.class);
@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
 			return save.getUserId()!=null;
 		}
 
-	}
+	
 	
 	//################################################################################################
 
@@ -250,21 +250,16 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		
 		UserDtlsEntity user=new UserDtlsEntity();
-				
-		if(user==null)
-		{
-			return null;
-		}
-		else
-		{
+		
 			ModelMapper mapper=new ModelMapper();
-			UserDto map = mapper.map(user, UserDto.class);
-			return  map;
-		}
+			UserDto userd = mapper.map(user, UserDto.class);
+			
+			return userd;
+	
 	}
 	//##############################################################################################
-private static String generateRandom() {
-
+private static String generateRandom()
+{
 	String aToZ="ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
     Random rand=new Random();
     StringBuilder res=new StringBuilder();

@@ -9,6 +9,6 @@ import com.app.entities.StateEntity;
 
 public interface StateRepo extends JpaRepository<StateEntity, Integer>{
 
-	@Query(value="select * from STATE where countryId=:cid", nativeQuery = true)
+	@Query(value="select * from STATE_MASTER where countryId=:cid", nativeQuery = true)
 	public List<StateEntity> findByCountryId(Integer cid);
 }

@@ -9,7 +9,7 @@
   </head>
   <body>
     <h1>Register Here</h1>
-    
+    <div>
     <form th:action="@{/registerView}" th:Object= ${registerDto} th:method="post">
     <font color=red><p th:text="${emsg}"></p></font>
     <font color=green><p th:text="${smsg}"></p></font>
@@ -17,24 +17,24 @@
     <table>
     	<tr>
     		<td>Name: </td>
-    		<td><input type="text" th:field="*{name}"/></td>
+    		<td><input type="text" th:field="*{name}" required/></td>
     	</tr>
     	
     	<tr>
     		<td>Email</td>
-    		<td><input type="email" th:field="*{email}"/></td>
+    		<td><input type="email" th:field="*{email}" required/></td>
     	</tr>
     	
     	<tr>
     		<td>Phone No</td>
-    		<td><input type=number th:field="*{phone}" /></td>
+    		<td><input type=number th:field="*{phone}" required/></td>
     	</tr>
     	
     	<tr>
     		<td>Country</td>
     		<td>
     		<select th:field="*{countryId}" id="countryId"  class="form-select"  required>
-    		<option value="">-Select-</option>
+    		<option value="">-Select-</option>  
     		<option th:each="entry : ${countries.entrySet()}" th:value="${entry.key} "
     		th:text="${entry.value}"/>
     		</select>
@@ -44,7 +44,7 @@
     	<tr>
     		<td>State</td>
     		<td>
-    		<select th:field="*{stateId" id="stateId"  class="form-select"  required>
+    		<select th:field="*{stateId}" id="stateId"  class="form-select"  required>
     		<option value="">-Select-</option>
     		
     		</select>
@@ -54,7 +54,7 @@
     	<tr>
     		<td>City</td>
     		<td>
-    		<select th:field="*{cityId" id="cityId"  class="form-select"  required>
+    		<select th:field="*{cityId}" id="cityId"  class="form-select"  required>
     		<option value="">-Select-</option>
     		</td>
     	</tr>
@@ -67,7 +67,10 @@
     	
     </table>
     If already registered ?<a href="/">Login here</a>
-    <script>
+		
+    </form>
+    </div>
+        <script>
 
 		$(document).ready(function () {
 
@@ -82,7 +85,7 @@
 				var cid = $('#countryId').val();
 				$.ajax({
 					type: 'GET',
-					url: '/states/' + cid,
+					url: '/getState/' + cid,
 					success: function (response) {
 						console.log(response);
 						$.each(response, function (key, value) {
@@ -101,7 +104,7 @@
 				var sid = $('#stateId').val();
 				$.ajax({
 					type: 'GET',
-					url: '/cities/' + sid,
+					url: '/getCity/' + sid,
 					success: function (response) {
 						console.log(response);
 						$.each(response, function (key, value) {
@@ -112,7 +115,6 @@
 			});
 		});
 
-	</script>		
-    </form>
+	</script>
   </body>
 </html>
